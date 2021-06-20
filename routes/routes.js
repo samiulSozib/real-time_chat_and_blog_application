@@ -3,6 +3,7 @@ const dashboardRouter=require('./dashboardRoute')
 const profileRouter=require('./profileRoute')
 const postRouter=require('./postRoute')
 const uploadRoute=require('./uploadRoute')
+const apiRoute=require('../api/routes/apiRoutes')
 
 const routes=[
     {
@@ -20,6 +21,10 @@ const routes=[
     {
         path:'/auth',
         handler:authRoute
+    },
+    {
+        path:'/api',
+        handler:apiRoute
     },
     {
         path:'/',

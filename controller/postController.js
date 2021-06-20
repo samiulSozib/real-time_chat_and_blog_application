@@ -30,6 +30,7 @@ exports.createPostPostController=async(req,res,next)=>{
         thumbnail:'',
         readTime,
         author:req.user._id,
+        author_name:req.user.name,
         likes:[],
         dislikes:[],
         comments:[]
@@ -54,4 +55,24 @@ exports.createPostPostController=async(req,res,next)=>{
         console.log(e)
         next(e)
     }
+}
+
+exports.postDetailsController=async(req,res,next)=>{
+    let {posrtId}=req.params
+    //console.log(posrtId)
+
+    try{
+
+
+        let post=await Post.findOne({posrtId})
+        //console.log(post)
+
+        return res.render('pages/post/post-details',{title:`${post.title}`,post})
+
+    }catch(e){
+        console.log(e)
+        next(e)
+    }
+
+    
 }

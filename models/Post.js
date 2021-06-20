@@ -12,6 +12,9 @@ const postSchema=new Schema({
         type:Schema.Types.ObjectId,
         ref:"User"
     },
+    author_name:{
+        type:String
+    },
     thumbnail:{
         type:String
     },
