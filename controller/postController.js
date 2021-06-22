@@ -58,13 +58,13 @@ exports.createPostPostController=async(req,res,next)=>{
 }
 
 exports.postDetailsController=async(req,res,next)=>{
-    let {posrtId}=req.params
+    let {postId}=req.params
     //console.log(posrtId)
 
     try{
 
 
-        let post=await Post.findOne({posrtId})
+        let post=await Post.findOne({_id:postId})
         //console.log(post)
 
         return res.render('pages/post/post-details',{title:`${post.title}`,post})

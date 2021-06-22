@@ -6,7 +6,7 @@ window.onload=function(){
 
     likeBtn.addEventListener('click',function(e){
         let postId=likeBtn.dataset.post
-        console.log(postId)
+        //console.log(postId)
         reqlikeDislike('likes',postId)
             .then(res=>res.json())
             .then(data=>{
@@ -23,7 +23,7 @@ window.onload=function(){
     })
 
     dislikeBtn.addEventListener('click',function(e){
-        let postId=likeBtn.dataset.post
+        let postId=dislikeBtn.dataset.post
         reqlikeDislike('dislikes',postId)
             .then(res=>res.json())
             .then(data=>{
