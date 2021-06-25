@@ -1,12 +1,25 @@
 <%- include('../../partials/header.ejs') %> 
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css">
     <div>
         <div class="container">
             <h4>My Profile (<%= profile.name %> )</h4>
             <div class="row">
                 <div class="col-lg-3 col-md-4 col-sm-12">
                     <div class="card card-body">
-                        <img class="img-thumbnail img-fluid" id="avatar" src="/uploads/default.png" alt="avatart">
+                        <img class="img-thumbnail img-fluid" id="avatar" src="<%= profile.avatar %> " alt="avatart">
+                        <form action="/uploads/profilePics" id="profilePicsForm" class="my-2">
+                            <input type="file" name="profilePics" id="profilePicsFile" accept="image/*">
+                            <input type="button"
+                              value="Remove Pics"
+                              class="btn btn-danger btn-sm my-2"
+                              id="removeProfilePics"
+                              <% if(profile.avatar.includes('default.png')){%>
+                                style='display:none'
+                              <% }else{ %>
+                                style='display:block'
+                              <% } %>
+                              >
+                        </form>
                         <p class="mt-4">Name: <strong><%= profile.name %></strong> </p>
                         <p class="mt-4">Email: <strong><%= profile.email %></strong> </p>
                         <p class="mt-4">Bio: <strong><%= profile.bio %></strong> </p>
@@ -53,10 +66,35 @@
                 </div>
             </div>
         </div>
+
+        
+     <!-- modal -->
+     <div class="modal fade" id="crop-modal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Resize Your Image</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+             <div id="cropped-image"></div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" id="cancel-cropping" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="upload-image">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+       <!-- modal -->
     </div>
 
     <%- include('../../partials/footer.ejs') %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.js"></script>
     <!-- <script src="/scripts/singlePage.js"></script>  -->
+    <script src="/scripts/profilePicsUpload.js"></script>
 
     </body>
 </html>

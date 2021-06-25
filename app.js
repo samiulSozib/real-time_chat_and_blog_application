@@ -30,3 +30,4 @@ mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@mycluster.oazue.mongod
 }).catch(e=>{
     return console.log(e)
 })
+

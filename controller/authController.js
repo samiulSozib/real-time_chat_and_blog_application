@@ -30,7 +30,7 @@ exports.signupPostController=async(req,res,next)=>{
             email,
             password:hashPassword,
             bio:'',
-            avatar:''
+            avatar:'/uploads/default.png'
         })
 
         let createdUser=await user.save()
