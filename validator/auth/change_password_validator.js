@@ -15,7 +15,7 @@ module.exports=[
      .isLength({min:5})
      .withMessage('Password must be greater than 5 char')
      .custom((confirmPassword,{req})=>{
-         if(confirmPassword!=req.body.password){
+         if(confirmPassword!=req.body.newPassword){
              return Promise.reject('Password does not match')
          }
          return true
