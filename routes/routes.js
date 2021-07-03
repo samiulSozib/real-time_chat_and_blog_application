@@ -4,6 +4,7 @@ const profileRouter=require('./profileRoute')
 const postRouter=require('./postRoute')
 const uploadRoute=require('./uploadRoute')
 const apiRoute=require('../api/routes/apiRoutes')
+const passwordRoute=require('./password_route')
 
 const routes=[
     {
@@ -25,6 +26,10 @@ const routes=[
     {
         path:'/api',
         handler:apiRoute
+    },
+    {
+        path:'/password',
+        handler:passwordRoute
     },
     {
         path:'/',

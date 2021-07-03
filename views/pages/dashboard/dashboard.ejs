@@ -16,7 +16,7 @@
                                         <% } %> 
                                     </div>
                                     <div class="col-lg-8 col-md-6 col-sm-12">
-                                        <a href="/profile/<%= post.author %>"><strong><%= post.author_name %> </strong></a><br>
+                                        <a href="/profile/<%= post.author._id %>"><strong><%= post.author.name %> </strong></a><br>
                                         <small>
                                             <%= moment(post.createdAt) %>, 
                                             <%= post.readTime %> 

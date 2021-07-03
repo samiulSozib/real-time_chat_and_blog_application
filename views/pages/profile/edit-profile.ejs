@@ -1,0 +1,41 @@
+<%- include('../../partials/header.ejs') %> 
+
+    <div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-body mx-5">
+                        <h2 class="my-2">Update Profile</h2>
+                        <hr>
+                        <form action="/profile/edit-profile/" method="POST">
+                            <p><strong>Email :</strong><%= profile.email %> </p>
+                            <p><strong>Profile Avatar</strong></p>
+                            <img src="<%= profile.avatar %>" alt="profile-image" class="card card-body mb-3" style="height: 200px;width: 200px;">
+                            <div class="form-group">
+                                <label for="title">Enter Name :</label>
+                                <input type="text" name="name" id="name" placeholder="Enter Name" class="form-control <%= error.name?'is-invalid':'' %> " value="<%= profile.name %>">
+                                <div class="invalid-feedback">
+                                    <%= error.name %> 
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="bio">Enter Bio :</label>
+                                <textarea name="bio" id="bio" cols="10" rows="3" class="form-control"><%=profile.bio%></textarea>
+                            </div>
+                            
+
+                            <input type="submit" class="btn btn-primary" value="Update Profile">
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../../partials/footer.ejs') %> 
+    
+
+    </body>
+</html>

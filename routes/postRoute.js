@@ -1,5 +1,5 @@
 const router=require('express').Router()
-const {createPostGetController,createPostPostController,postDetailsController}=require('../controller/postController')
+const {createPostGetController,createPostPostController,postDetailsController,getEditPostController,postEditPostController}=require('../controller/postController')
 const {isAuthenticated}=require('../middlewares/authMiddleware')
 const upload=require('../middlewares/uploadMiddleware')
 const postvalidator=require('../validator/post/postValidator')
@@ -10,5 +10,9 @@ router.post('/create-post',upload.single('post-thumbnail'),isAuthenticated,postv
 
 
 router.get('/:postId',isAuthenticated,postDetailsController)
+
+
+router.get('/edit-post/:postId',isAuthenticated,getEditPostController)
+router.post('/edit-post/:postId',upload.single('post-thumbnail'),isAuthenticated,postvalidator,postEditPostController)
 
 module.exports=router 

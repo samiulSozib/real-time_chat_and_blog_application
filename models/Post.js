@@ -43,5 +43,5 @@ const postSchema=new Schema({
     timestamps:true
 })
 
-const Post=model('POst',postSchema)
+const Post=model('Post',postSchema)
 module.exports=Post 

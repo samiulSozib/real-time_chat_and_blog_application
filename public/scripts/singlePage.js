@@ -1,6 +1,8 @@
 window.onload=function(){
     const likeBtn=document.getElementById('likeBtn')
     const dislikeBtn=document.getElementById('dislikeBtn')
+    const comment=document.getElementById('comment')
+    const commentHolder=document.getElementById('comment-holder')
 
     // like dislike
 
@@ -53,4 +55,119 @@ window.onload=function(){
 
         return fetch(req)
     }
+
+
+        // comment
+        comment.addEventListener('keypress',function(e){
+            if(e.key=='Enter'){
+                if(e.target.value){
+                    let postId=comment.dataset.post
+                    let data={
+                        body:e.target.value
+                    }
+                    let req=generateRequest(`/api/comments/${postId}`,'POST',data)
+                    fetch(req)
+                        .then(res=>res.json())
+                        .then(data=>{
+                            let commentElement=createComment(data)
+                            commentHolder.insertBefore(commentElement,commentHolder.children[0])
+                            e.target.value=''
+                        })
+                        .catch(e=>{
+                            console.log(e.message)
+                            alert(e.message)
+                        })
+                }else{
+                    alert('Please Enter A Valid Comment')
+                }
+            }
+        })
+
+        
+    commentHolder.addEventListener('keypress',function(e){
+        if(commentHolder.hasChildNodes(e.target)){
+            if(e.key=='Enter'){
+                let commentId=e.target.dataset.comment
+                let value=e.target.value
+
+                if(value){
+                    let data={
+                        body:value
+                    }
+
+                    let req=generateRequest(`/api/comments/replies/${commentId}`,'POST',data)
+                    fetch(req)
+                        .then(res=>res.json())
+                        .then(data=>{
+                            let replyElement=createReplyElement(data)
+                            let parent=e.target.parentElement
+                            parent.previousElementSibling.appendChild(replyElement)
+                            e.target.value=''
+                        })
+                        .catch(e=>{
+                            console.log(e.message)
+                            alert(e.message)
+                        })
+
+                }else{
+                    alert('Please enter valid reply')
+                }
+            }
+        }
+    })
+
+
+
+
+}
+
+function  generateRequest(url,method,body){
+
+    let headers=new Headers()
+    headers.append('Accept','Application/JSON')
+    headers.append('Content-Type','Application/JSON')
+
+    let req=new Request(url,{
+        method,
+        headers,
+        body:JSON.stringify(body),
+        mode:'cors'
+    })
+    return req
+}
+
+
+function createComment(comment){
+    let innerHTML=`
+    <img src="${comment.user.avatar}" class="rounded-circle mx-3 my-3" style="width: 40px;">
+    <div class="media-body my-3">
+        <p>${comment.user.name}</p>
+        <p>${comment.body}</p>
+        <div class="my-3"> 
+            <input type="text" class="form-control" placeholder="Press Enter To Reply" name="reply" data-comment="${comment._id}">
+        </div>
+    </div>
+    `
+
+    let div=document.createElement('div')
+    div.className='media border'
+    div.innerHTML=innerHTML
+
+    return div
+}
+
+function createReplyElement(reply){
+    let innerHTML=`
+    <img src="${reply.avatar}" class="align-self-start mr-3 rounded-circle" style="width: 40px;">
+    <div class="media-body my-3">
+        <p>${reply.name}</p>
+        <p>${reply.body}</p>
+    </div>
+    <hr>
+    `
+    let div=document.createElement('div')
+    div.className='media'
+    div.innerHTML=innerHTML
+
+    return div
 }

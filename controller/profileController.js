@@ -1,5 +1,7 @@
 const User=require('../models/User')
 const Post=require('../models/Post')
+const { validationResult } = require('express-validator')
+const validationErrorFormatter = require('../utils/validationErrorFormatter')
 // get profile page
 
 exports.profileGetController=async(req,res,next)=>{
@@ -40,3 +42,54 @@ exports.getAuthorProfile=async(req,res,next)=>{
         next(e)
     }
 }
+
+// edit profile get controller
+exports.getEditProfileController=async(req,res,next)=>{
+    let profileId=req.user._id
+  
+
+    try{
+        let profile=await User.findById(profileId)
+        //console.log(profile)
+
+
+        return res.render('pages/profile/edit-profile',{title:`${profile.name}`,profile,error:{}})
+
+    }catch(e){
+        console.log(e)
+        next(e)
+    }
+
+    
+}
+
+// edit profile post controller
+exports.postEditProfileController=async(req,res,next)=>{
+    let profileId=req.user._id
+    let {name,bio}=req.body
+    let errors=validationResult(req).formatWith(validationErrorFormatter)
+    
+
+    try{
+        let profile=await User.findById(profileId)
+
+        if(!errors.isEmpty()){
+            return res.render('pages/profile/edit-profile',{title:`${profile.name}`,profile,error:errors.mapped()})
+        }
+
+        await User.findByIdAndUpdate(
+            {_id:profile._id},
+            {$set:{name,bio}},
+            {new:true}
+        )
+        //console.log(name,bio)
+
+        return res.redirect('/profile')
+
+
+    }catch(e){
+        console.log(e)
+        next(e)
+    }
+}
+
