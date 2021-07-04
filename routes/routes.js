@@ -5,6 +5,7 @@ const postRouter=require('./postRoute')
 const uploadRoute=require('./uploadRoute')
 const apiRoute=require('../api/routes/apiRoutes')
 const passwordRoute=require('./password_route')
+const inboxRoute=require('./inboxRoute')
 
 const routes=[
     {
@@ -30,6 +31,10 @@ const routes=[
     {
         path:'/password',
         handler:passwordRoute
+    },
+    {
+        path:'/inbox',
+        handler:inboxRoute
     },
     {
         path:'/',

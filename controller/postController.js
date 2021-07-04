@@ -44,7 +44,7 @@ exports.createPostPostController=async(req,res,next)=>{
     console.log(post)
 
     try{
-
+ 
         let createdPost=await post.save()
         if(createdPost){
             return res.redirect('/')
@@ -158,6 +158,40 @@ exports.postEditPostController=async(req,res,next)=>{
         }
 
         return res.redirect(`/post/${postId}`)
+
+    }catch(e){
+        console.log(e)
+        next(e)
+    }
+}
+
+// delete post controller
+
+exports.deletePostController=async(req,res,next)=>{
+    let {postId}=req.params
+
+    try{
+
+        let post=await Post.findById(postId)
+        let postThumbnail=post.thumbnail 
+        //console.log(postThumbnail)
+
+        let deletedPost=await Post.findByIdAndDelete(postId)
+         
+        //console.log(deletedPost)
+
+        if(deletedPost){
+            fs.unlink(`public${postThumbnail}`,error=>{
+                if(error){
+                    res.json({
+                        message:'Post Thumbnail delete failed'
+                    })
+                }
+            })
+        }
+
+
+        return res.redirect('/profile')
 
     }catch(e){
         console.log(e)
