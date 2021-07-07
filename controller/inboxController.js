@@ -1,8 +1,23 @@
 const User=require('../models/User')
 const Conversation=require('../models/Conversation')
+const Message=require('../models/Message')
 
 exports.getInboxTestController=async(req,res,next)=>{
-    return res.render('pages/inbox/inboxTest.ejs',{title:'Inbox Test'})
+    try{
+
+        const conversations=await Conversation.find({
+            $or:[
+                {"creator.id":req.user._id},
+                {"participant.id":req.user._id}
+            ]
+        })
+
+        console.log(conversations)
+        return res.render('pages/inbox/inboxTest.ejs',{title:'Inbox Test',conversations})
+    }catch(e){
+        console.log(e)
+        next(e)
+    }
 }
 
 exports.getInboxController=async(req,res,next)=>{
@@ -85,5 +100,38 @@ exports.addConversation=async(req,res,next)=>{
     }catch(e){
         console.log(e)
         next(e)
+    }
+}
+
+// get message of a conversation
+
+exports.getMessage=async(req,res,next)=>{
+    try{
+
+        const messages=await Message.find({
+            conversation_id:req.params.conversation_id
+        }).sort("-createdAt")
+
+        const {participant}=await Conversation.findById(req.params.conversation_id)
+
+        res.status(200).json({
+            data:{
+                message:messages.
+                participant
+            },
+            user:req.user._id,
+            conversation_id:req.params.conversation_id
+        });
+
+    }catch(e){
+        res.status(500).json({
+            errors: {
+                common: {
+                  msg: "Unknows error occured!",
+                },
+              },
+        })
+            
+            
     }
 }
