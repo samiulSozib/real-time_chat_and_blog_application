@@ -185,7 +185,11 @@ font-size: 10px;
 .msg_head{
 position: relative;
 }
-
+#chat-message-list{
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse; 
+}
 #action_menu_btn{
 position: absolute;
 right: 10px;

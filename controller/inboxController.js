@@ -2,23 +2,23 @@ const User=require('../models/User')
 const Conversation=require('../models/Conversation')
 const Message=require('../models/Message')
 
-exports.getInboxTestController=async(req,res,next)=>{
-    try{
+// exports.getInboxTestController=async(req,res,next)=>{
+//     try{
 
-        const conversations=await Conversation.find({
-            $or:[
-                {"creator.id":req.user._id},
-                {"participant.id":req.user._id}
-            ]
-        })
+//         const conversations=await Conversation.find({
+//             $or:[
+//                 {"creator.id":req.user._id},
+//                 {"participant.id":req.user._id}
+//             ]
+//         })
 
-        //console.log(conversations)
-        return res.render('pages/inbox/inboxTest.ejs',{title:'Inbox Test',conversations})
-    }catch(e){
-        console.log(e)
-        next(e)
-    }
-}
+//         //console.log(conversations)
+//         return res.render('pages/inbox/inboxTest.ejs',{title:'Inbox Test',conversations})
+//     }catch(e){
+//         console.log(e)
+//         next(e)
+//     }
+// }
 
 exports.getInboxController=async(req,res,next)=>{
     try{
@@ -31,7 +31,7 @@ exports.getInboxController=async(req,res,next)=>{
         })
 
         //console.log(conversations)
-        return res.render('pages/inbox/inbox.ejs',{title:'Inbox',conversations})
+        return res.render('pages/inbox/inboxTest.ejs',{title:'Inbox',conversations})
     }catch(e){
         console.log(e)
         next(e)
@@ -112,7 +112,7 @@ exports.getMessage=async(req,res,next)=>{
 
         const messages=await Message.find({
             conversation_id:req.params.conversation_id
-        })
+        }).sort("-createdAt")
 
         const {participant}=await Conversation.findById(req.params.conversation_id)
 
@@ -177,21 +177,19 @@ exports.sendMessage=async(req,res,next)=>{
             console.log(result)
             // emit socket event
 
-            // global.importScripts.emit("new_message",{
-            //     message:{
-            //         message: {
-            //             conversation_id: req.body.conversationId,
-            //             sender: {
-            //               id: req.user._id,
-            //               name: req.user.name,
-            //               avatar: req.user.avatar || null,
-            //             },
-            //             message: req.body.message,
-            //             attachment: attachments,
-            //             date_time: result.date_time,
-            //         }
-            //     }
-            // })
+            global.io.emit("new_message",{
+                    message: {
+                        conversation_id: req.body.conversationId,
+                        sender: {
+                          id: req.user._id,
+                          name: req.user.name,
+                          avatar: req.user.avatar || null,
+                        },
+                        message: req.body.message,
+                        attachment: attachments,
+                        date_time: result.date_time,
+                    }
+            })
 
             res.status(200).json({
                 message:"Successful",
