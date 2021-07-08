@@ -10,7 +10,7 @@ exports.bindUserWithRequest=()=>{
 
             let user=await User.findById(req.session.user._id)
             req.user=user
-            console.log(req.user)
+            //console.log(req.user)
             next()
 
         }catch(e){

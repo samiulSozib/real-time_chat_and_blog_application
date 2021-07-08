@@ -12,7 +12,7 @@ exports.getInboxTestController=async(req,res,next)=>{
             ]
         })
 
-        console.log(conversations)
+        //console.log(conversations)
         return res.render('pages/inbox/inboxTest.ejs',{title:'Inbox Test',conversations})
     }catch(e){
         console.log(e)
@@ -30,7 +30,7 @@ exports.getInboxController=async(req,res,next)=>{
             ]
         })
 
-        console.log(conversations)
+        //console.log(conversations)
         return res.render('pages/inbox/inbox.ejs',{title:'Inbox',conversations})
     }catch(e){
         console.log(e)
@@ -92,6 +92,8 @@ exports.addConversation=async(req,res,next)=>{
             }
         })
 
+        console.log(newConversation)
+
         const result=await newConversation.save()
         res.status(200).json({
             message:'Conversation add success'
@@ -110,13 +112,13 @@ exports.getMessage=async(req,res,next)=>{
 
         const messages=await Message.find({
             conversation_id:req.params.conversation_id
-        }).sort("-createdAt")
+        })
 
         const {participant}=await Conversation.findById(req.params.conversation_id)
 
         res.status(200).json({
             data:{
-                message:messages.
+                messages:messages,
                 participant
             },
             user:req.user._id,
@@ -133,5 +135,75 @@ exports.getMessage=async(req,res,next)=>{
         })
             
             
+    }
+}
+
+// send new message
+
+exports.sendMessage=async(req,res,next)=>{
+    let message=req.body.message
+    console.log(message)
+    if(message){
+        
+        try{
+            // // save message
+             let attachments=null
+            // if(req.files && req.files.lenght>0){
+                 attachments=[]
+
+            //     req.files.forEach((file)=>{
+            //         attachments.push(file.filename)
+            //     })
+            // }
+
+            const newMessage=new Message({
+                text:message,
+                attachment:attachments,
+                sender: {
+                    id: req.user._id,
+                    name: req.user.name,
+                    avatar: req.user.avatar || null,
+                  },
+                  receiver: {
+                    id: req.body.receiverId,
+                    name: req.body.receiverName,
+                    avatar: req.body.avatar || null,
+                  },
+                  conversation_id:req.body.conversationId
+            })
+
+            console.log(newMessage)
+            const result=await newMessage.save()
+            console.log(result)
+            // emit socket event
+
+            // global.importScripts.emit("new_message",{
+            //     message:{
+            //         message: {
+            //             conversation_id: req.body.conversationId,
+            //             sender: {
+            //               id: req.user._id,
+            //               name: req.user.name,
+            //               avatar: req.user.avatar || null,
+            //             },
+            //             message: req.body.message,
+            //             attachment: attachments,
+            //             date_time: result.date_time,
+            //         }
+            //     }
+            // })
+
+            res.status(200).json({
+                message:"Successful",
+                data:result
+            })
+
+        }catch(e){
+            res.status(500).json({
+                message:e.errors
+            })
+        }
+    }else{
+        console.log('some thing wrong')
     }
 }

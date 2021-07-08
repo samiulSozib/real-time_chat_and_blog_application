@@ -4,7 +4,7 @@ const messageSchema=new Schema({
     text:{
         type:String
     },
-    attachment:[
+    attachment:[ 
         {
             type:String
         }
@@ -31,5 +31,5 @@ const messageSchema=new Schema({
     timestamps:true
 })
 
-const Message=model('message',messageSchema)
+const Message=model('Message',messageSchema)
 module.exports=Message
