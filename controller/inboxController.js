@@ -2,23 +2,6 @@ const User=require('../models/User')
 const Conversation=require('../models/Conversation')
 const Message=require('../models/Message')
 
-// exports.getInboxTestController=async(req,res,next)=>{
-//     try{
-
-//         const conversations=await Conversation.find({
-//             $or:[
-//                 {"creator.id":req.user._id},
-//                 {"participant.id":req.user._id}
-//             ]
-//         })
-
-//         //console.log(conversations)
-//         return res.render('pages/inbox/inboxTest.ejs',{title:'Inbox Test',conversations})
-//     }catch(e){
-//         console.log(e)
-//         next(e)
-//     }
-// }
 
 exports.getInboxController=async(req,res,next)=>{
     try{
@@ -31,7 +14,7 @@ exports.getInboxController=async(req,res,next)=>{
         })
 
         //console.log(conversations)
-        return res.render('pages/inbox/inboxTest.ejs',{title:'Inbox',conversations})
+        return res.render('pages/inbox/inbox.ejs',{title:'Inbox',conversations})
     }catch(e){
         console.log(e)
         next(e)
