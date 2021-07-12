@@ -12,7 +12,7 @@ const messageSchema=new Schema({
     sender:{
         id:Schema.Types.ObjectId,
         name:String,
-        avatar:String
+        avatar:String  
     },
     receiver:{
         id:Schema.Types.ObjectId,

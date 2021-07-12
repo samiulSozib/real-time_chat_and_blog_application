@@ -190,6 +190,11 @@ position: relative;
     display: flex;
     flex-direction: column-reverse; 
 }
+.message-row {
+    display: grid;
+    /* grid-template-columns: 70%; */
+    margin-bottom: 20px;
+  }
 #action_menu_btn{
 position: absolute;
 right: 10px;
@@ -232,6 +237,36 @@ background-color: rgba(0,0,0,0.2);
 margin-bottom: 15px !important;
 }
 }
+
+/*  */
+/*  */
+/* modal search css */
+.search_users ul {
+    list-style-type: none;
+    margin: 10px;
+  }
+  
+  .search_users ul > li {
+    background: var(--light);
+    padding: 10px;
+    border: 1px solid var(--dark);
+    border-radius: 6px;
+    width: 100%;
+    height: auto;
+    margin-top: 5px;
+  }
+  
+  .search_users .user {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    align-items: center;
+  }
+  
+  .search_users .avatar img {
+    width: 30px;
+    height: 30px;
+  }
+/* modal search css */
 footer{
     min-height: 50px;
     background: #343A40;
